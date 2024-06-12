@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Fills a fillable PDF from POST form data",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "dev": "nodemon server.js"
   },
@@ -10,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "pdf-lib": "^1.17.1"
   }
 }

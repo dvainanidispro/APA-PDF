@@ -1,0 +1,15 @@
+{
+  "name": "apa-pdf",
+  "version": "1.0.0",
+  "description": "Fills a fillable PDF from POST form data",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

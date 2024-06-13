@@ -2,29 +2,19 @@
 
 import { PDFDocument } from 'pdf-lib';
 
-let fillCommands = [
-    (form, key, value) => { form.getTextField(key).setText(value) },
-    (form, key, value) => { form.getCheckBox(key).check() },
-    (form, key, value) => { }   // do nothing
-];
 
- 
+/** Συμπληρώνει ένα συγκεκριμένο πεδίο της φόρμας με τη συγκεκριμένη τιμή */
 function fillField(form, fieldName, fieldValue){
-    // for (const command of fillCommands) {
-    //     try{
-    //         command(form, fieldName, fieldValue);
-    //         break; // Exit the loop if the command succeeds
-    //     }
-    //     catch(e){}
-    // }
+
+    /** Το πεδίο του PDF */
     let field;
     try{
         field = form.getField(fieldName);
-    }catch(e){
-        return;
+    }catch(e){  // το πεδίο της φόρμας δεν αντιστοιχεί σε πεδίο στο PDF
+        return; 
     }
     let fieldType = field.constructor.name;
-    console.log(fieldType);
+    // console.log(fieldType);
     
     switch(fieldType){
         case 'PDFTextField':
@@ -41,14 +31,13 @@ function fillField(form, fieldName, fieldValue){
     }
 } 
 
-async function fillForm(pdfLocation, fillData){
+/** Συμπληρώνει ένα fillable PDF που βρίσκεται στο pdfLocation με βάση τα στοιχεία μιας φόρμας */
+async function fillForm(pdfLocation, formData){
     const pdfBytes = await fetch(pdfLocation).then(res => res.arrayBuffer());
     const pdfDoc = await PDFDocument.load(pdfBytes);
     const form = pdfDoc.getForm();
     // const fields = form.getFields();
-    for (const [key, value] of Object.entries(fillData)) {
-        // let field = form.getField(key);
-        // console.log(field.constructor.name);
+    for (const [key, value] of Object.entries(formData)) {
         fillField(form, key, value);
     }
     const pdfBytesFilled = await pdfDoc.save();

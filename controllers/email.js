@@ -23,6 +23,7 @@ let sendEmail = (recepient, attachment) => {
             }
         ]
     };
+    console.log('Sending email...');
     transporter.sendMail(email, (error, info) => {
         if (error) {
             console.log(error);

@@ -105,11 +105,11 @@ server.post('/', (req, res) => {
 /////////////////////////////////          START THE SERVER         /////////////////////////////////////
 
 
-let port = 80;
-const startWebServer = (server,port) => {
-    server.listen(port, () => {
+// let port = 80;
+// const startWebServer = (server,port) => {
+    server.listen(80, () => {
         let presentTime = () => (new Date()).toLocaleString('el-GR',{hourCycle: 'h23', dateStyle: 'short', timeStyle: 'short', timeZone: 'Europe/Athens'});
-        console.log(`\x1b[35m Server is listening on ${process.env.LISTENINGURL}:${port}. Started at: ${presentTime()}. \x1b[0m`);
+        console.log(`\x1b[35m Server is listening on localhost:80. Started at: ${presentTime()}. \x1b[0m`);
     });
-};
-startWebServer(server,port);
+// };
+// startWebServer(server,port);

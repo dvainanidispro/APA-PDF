@@ -1,5 +1,6 @@
 'use strict'
 
+import { response } from 'express';
 import { PDFDocument } from 'pdf-lib';
 
 
@@ -33,7 +34,20 @@ function fillField(form, fieldName, fieldValue){
 
 /** Συμπληρώνει ένα fillable PDF που βρίσκεται στο pdfLocation με βάση τα στοιχεία μιας φόρμας */
 async function fillForm(pdfLocation, formData){
-    const pdfBytes = await fetch(pdfLocation).then(res => res.arrayBuffer());
+    // let pdfBytes = false;
+    let pdfBytes = await fetch(pdfLocation)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('PDF template was not found');
+            }
+            return response;
+        })
+        .then(res => res.arrayBuffer())
+        .catch(err => {         // error in any previous step
+            console.log(err);
+            return false;
+        });
+    if(!pdfBytes){ return false }
     const pdfDoc = await PDFDocument.load(pdfBytes);
     const form = pdfDoc.getForm();
     // const fields = form.getFields();

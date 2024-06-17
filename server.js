@@ -71,14 +71,21 @@ server.get('/', (req, res) => {
 
 
 server.post('/', async (req, res) => {
-    // console.log(req.body);
     let formData = req.body;
+    console.log({formData});
     let metaData = {       // Πεδία φόρμας με συγκεκριμένη λειτουργία
-        pdfUrl: req.body.PdfTemplateUrl,
-        recepient: req.body.Email ?? null,
+        pdfUrl: req.body.pdftemplateurl,
+        recepient: req.body.email ?? null,
     }
+    console.log({metaData});
+    
 
     fillForm(metaData.pdfUrl, formData).then((outputPdf) => {
+
+        if (!outputPdf) {
+            res.status(500).send('Error filling the PDF.');
+            return;
+        }
 
         // Αποθήκευση αρχείου τοπικά. Να αφαιρεθεί αργότερα. 
         fs.writeFile('public/output/filled.pdf', outputPdf, (err) => {

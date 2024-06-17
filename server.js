@@ -74,7 +74,7 @@ server.post('/', async (req, res) => {
     let formData = req.body;
     console.log({formData});
     let metaData = {       // Πεδία φόρμας με συγκεκριμένη λειτουργία
-        pdfUrl: req.body.pdftemplateurl,
+        pdfUrl: req.body.PdfTemplateUrl,
         recepient: req.body.email ?? null,
     }
     console.log({metaData});

@@ -73,9 +73,12 @@ server.get('/', (req, res) => {
 server.post('/', async (req, res) => {
     let formData = req.body;
     console.log({formData});
-    let metaData = {       // Πεδία φόρμας με συγκεκριμένη λειτουργία
+    /** Πεδία φόρμας με δεσμευμένο όνομα και συγκεκριμένη λειτουργία */
+    let metaData = {
+        /** Η τοποθεσία του άδειου fillable PDF */
         pdfUrl: req.body.PdfTemplateUrl,
-        recepient: req.body.email ?? null,
+        /** Παραλήπτης του email θα είναι είτε το πεδίο που ορίζεται στο RecipientField, είτε το πεδιό email */ 
+        recepient: req.body[req.body.RecipientField] ?? req.body.email ?? null,
     }
     console.log({metaData});
     

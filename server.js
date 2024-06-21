@@ -2,8 +2,9 @@
 
 
 
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////         DEPENDENCIES         /////////////////////////////////////
+
 
 import fs from 'fs';
 import 'dotenv/config';
@@ -16,48 +17,6 @@ server.use(express.static('public'));
 
 import { fillForm } from './controllers/fillform.js';
 import { sendEmail } from './controllers/email.js';
-
-
-
-///////////////////////////////////        TEST FILL FORM         /////////////////////////////////////
-
-
-/* 
-//fill a test form
-// fillForm('https://royalegroupnyc.com/wp-content/uploads/seating_areas/sample_pdf.pdf', 
-fillForm('http://localhost/input/sample_pdf.pdf', 
-    { 
-        'Name': 'Dimitris',
-        'Address': 'Home',
-        'Check Box1': 1,
-        'Check Box3': true,
-        'Group6': "Choice1",
-        "Text6": "Improv", 
-
-    }).then((outputPdf) => {//save to output folder
-        fs.writeFile('public/output/filled.pdf', outputPdf, (err) => {
-            if (err) throw err;
-            console.log('The file has been saved!');
-        });
-    });
-
-fillForm('http://localhost/input/sample_application.pdf', 
-        { 
-            'Surname': 'Vainanidis',
-            'Group36': 'Choice4',
-            // 'Check Box1': 1,
-            'Check Box33': 1,
-            // 'Group6': "Choice1",
-            // "Text6": "Improv", 
-        }).then((outputPdf) => {//save to output folder
-            fs.writeFile('public/output/filled_application.pdf', outputPdf, (err) => {
-                if (err) throw err;
-                console.log('The file has been saved!');
-            });
-        });
-*/   
-    
-
 
 
 
@@ -92,12 +51,12 @@ server.post('/', async (req, res) => {
 
         // Αποθήκευση αρχείου τοπικά. Να αφαιρεθεί αργότερα. 
         fs.writeFile('public/output/filled.pdf', outputPdf, (err) => {
-            if (err) throw err;
+            if (err) {throw err};
             console.log('The file has been saved!');
         });
 
         // Αποστολή αρχείου με email
-        if(metaData.recepient){
+        if (metaData.recepient) {
             sendEmail(metaData.recepient, outputPdf);
         }
 
@@ -106,9 +65,6 @@ server.post('/', async (req, res) => {
         res.status(200).send('OK.');
     });
 });
-
-
-
 
 
 

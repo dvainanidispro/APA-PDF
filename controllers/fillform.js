@@ -9,10 +9,20 @@ const fontLocation = './public/fonts/Ubuntu-R.ttf';     // ΠΡΟΣΟΧΗ! Να 
 const fontBytes = fs.readFileSync(fontLocation);
 
 
+/** Ελέγχει αν η τιμή το πεδίου είναι ημερομηνία */
+function isDate(value) {
+    const dateRegex = /^\d{4}-\d{1,2}-\d{1,2}( .+)?$/;
+    return dateRegex.test(value);
+}
+/** Λαμβάνει ένα string με ημερομηνία και επιστρέφει την ημερομηνία με Ελληνικό format */
+function greekDate(dateAsString){
+    return (new Date(dateAsString)).toLocaleDateString('el-GR');
+}
+
  
 /** Συμπληρώνει ένα συγκεκριμένο πεδίο της φόρμας με τη συγκεκριμένη τιμή */
 function fillField(form, fieldName, fieldValue, font){
-
+    
     /** Το πεδίο του PDF */
     let field;
     try{
@@ -20,8 +30,11 @@ function fillField(form, fieldName, fieldValue, font){
     }catch(e){  // το πεδίο της φόρμας δεν αντιστοιχεί σε πεδίο στο PDF
         return; 
     }
+
     let fieldType = field.constructor.name;
-    // console.log(fieldType);
+    fieldValue = (isDate(fieldValue)) ? greekDate(fieldValue) : fieldValue;
+    console.debug({fieldType,fieldName,fieldValue});
+
     
     switch(fieldType){
         case 'PDFTextField':
@@ -34,6 +47,12 @@ function fillField(form, fieldName, fieldValue, font){
         case 'PDFRadioGroup':
             form.getRadioGroup(fieldName).select(fieldValue, {font: font});
             break;
+        case 'PDFDropdown':
+            form.getDropdown(fieldName).select(fieldValue, {font: font});
+            break;
+        // case 'PDFOptionList':            // αυτό παίρνει και array
+        // case 'PDFButton':
+        // case 'PDFSignature':
         default:
             break;
     }
@@ -65,8 +84,8 @@ async function fillForm(pdfLocation, formData){
     for (const [key, value] of Object.entries(formData)) {
         fillField(form, key, value, unicodeFont);
     }
-    const pdfBytesFilled = await pdfDoc.save();
-    return pdfBytesFilled;
+    const filledPDF = await pdfDoc.save();
+    return filledPDF;
 }
 
 

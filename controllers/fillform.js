@@ -32,30 +32,37 @@ function fillField(form, fieldName, fieldValue, font){
     }
 
     let fieldType = field.constructor.name;
-    fieldValue = (isDate(fieldValue)) ? greekDate(fieldValue) : fieldValue;
+    
+    fieldValue = (isDate(fieldValue)) ? greekDate(fieldValue) : fieldValue;     //Ειδική μεταχείριση ημερομηνιών
     console.debug({fieldType,fieldName,fieldValue});
 
+    try{
     
-    switch(fieldType){
-        case 'PDFTextField':
-            form.getTextField(fieldName).setText(fieldValue, {font: font});
-            field.updateAppearances(font);
-            break;
-        case 'PDFCheckBox':
-            form.getCheckBox(fieldName).check();
-            break;
-        case 'PDFRadioGroup':
-            form.getRadioGroup(fieldName).select(fieldValue, {font: font});
-            break;
-        case 'PDFDropdown':
-            form.getDropdown(fieldName).select(fieldValue, {font: font});
-            break;
-        // case 'PDFOptionList':            // αυτό παίρνει και array
-        // case 'PDFButton':
-        // case 'PDFSignature':
-        default:
-            break;
+        switch(fieldType){
+            case 'PDFTextField':
+                form.getTextField(fieldName).setText(fieldValue, {font: font});
+                field.updateAppearances(font);
+                break;
+            case 'PDFCheckBox':
+                form.getCheckBox(fieldName).check();
+                break;
+            case 'PDFRadioGroup':
+                form.getRadioGroup(fieldName).select(fieldValue, {font: font});
+                break;
+            case 'PDFDropdown':
+                form.getDropdown(fieldName).select(fieldValue, {font: font});
+                break;
+            // case 'PDFOptionList':            // αυτό παίρνει και array
+            // case 'PDFButton':
+            // case 'PDFSignature':
+            default:
+                break;
+        }
+
+    }catch(e){
+        console.error(`Λάθος στο πεδίο ${fieldName}: ${e.message}`);
     }
+
 } 
 
 /** Συμπληρώνει ένα fillable PDF που βρίσκεται στο pdfLocation με βάση τα στοιχεία μιας φόρμας */

@@ -19,7 +19,10 @@ let transporter = nodemailer.createTransport({
  */
 let sendEmail = (recipient, attachment, pdfName="filled") => {
     let email = {
-        from: process.env.MAILFROM,
+        from: {
+            name: process.env.MAILSENDERNAME,
+            address: process.env.MAILFROM
+        },
         to: recipient,
         subject: 'Η φόρμα σας',
         html: `<p>Παρακαλούμε, ελέγξτε τη συνημμένη φόρμα, υπογράψτε τη και στείλτε τη, σύμφωνα με τις οδηγίες που έχετε λάβει.</p>`,

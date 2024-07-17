@@ -33,8 +33,8 @@ function fillField(form, fieldName, fieldValue, font){
 
     let fieldType = field.constructor.name;
     
-    fieldValue = (isDate(fieldValue)) ? greekDate(fieldValue) : fieldValue;     //Ειδική μεταχείριση ημερομηνιών
-    console.debug({fieldType,fieldName,fieldValue});
+    fieldValue = (isDate(fieldValue)) ? greekDate(fieldValue) : fieldValue;     // Ειδική μεταχείριση ημερομηνιών
+    console.debug({fieldType,fieldName,fieldValue});            // TODO: Να αφαιρεθεί
 
     try{
     
@@ -67,7 +67,7 @@ function fillField(form, fieldName, fieldValue, font){
 
 /** Συμπληρώνει ένα fillable PDF που βρίσκεται στο pdfLocation με βάση τα στοιχεία μιας φόρμας */
 async function fillForm(pdfLocation, formData){
-    // let pdfBytes = false;
+
     let pdfBytes = await fetch(pdfLocation)
         .then(response => {
             if (!response.ok) {

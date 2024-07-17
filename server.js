@@ -31,15 +31,17 @@ server.get('/', (req, res) => {
 
 server.post('/', async (req, res) => {
     let formData = req.body;
-    console.log({formData});
+    console.debug({formData});
     /** Πεδία φόρμας με δεσμευμένο όνομα και συγκεκριμένη λειτουργία */
     let metaData = {
         /** Η τοποθεσία του άδειου fillable PDF */
         pdfUrl: req.body.PdfTemplateUrl,
         /** Παραλήπτης του email θα είναι είτε το πεδίο που ορίζεται στο RecipientField, είτε το πεδιό email */ 
-        recepient: req.body[req.body.RecipientField] ?? req.body.email ?? null,
+        recipient: req.body[req.body.RecipientField] ?? req.body.email ?? null,
+        /** Το όνομα του αρχείου pdf που θα δημιουργηθεί */
+        pdfName: req.body.PdfName ?? 'filled',
     }
-    console.log({metaData});
+    console.debug({metaData});
     
 
     fillForm(metaData.pdfUrl, formData).then((outputPdf) => {
@@ -49,20 +51,20 @@ server.post('/', async (req, res) => {
             return;
         }
 
-        // Αποθήκευση αρχείου τοπικά. Να αφαιρεθεί αργότερα. 
-        fs.writeFile('public/output/filled.pdf', outputPdf, (err) => {
+        // Αποθήκευση αρχείου τοπικά. TODO: Να αφαιρεθεί αργότερα. 
+        fs.writeFile(`public/output/${metaData.pdfName}.pdf`, outputPdf, (err) => {
             if (err) {throw err};
-            console.log('The file has been saved!');
+            console.debug('The file has been saved!');
         });
 
         // Αποστολή αρχείου με email
-        if (metaData.recepient) {
-            sendEmail(metaData.recepient, outputPdf);
+        if (metaData.recipient) {
+            sendEmail(metaData.recipient, outputPdf, metaData.pdfName);
         }
 
         // res.status(200).send(outputPdf); // για αποστολή αρχείου ως απάντηση στο request
         // res.status(200).send('PDF has been filled and sent to the submitter.');
-        res.status(200).send('OK.');
+        res.status(200).send('OK');
     });
 });
 

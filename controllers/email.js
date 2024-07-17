@@ -10,15 +10,22 @@ let transporter = nodemailer.createTransport({
     }
 });
 
-let sendEmail = (recepient, attachment) => {
+/**
+ * Στέλνει το PDF με email στον παραλήπτη
+ * @param {string} recipient To email του παραλήπτη
+ * @param {Uint8Array} attachment Το αρχείο που θα αποσταλεί ως συνημμένο
+ * @param {string} pdfName Το όνομα του συνημμένου χωρίς την επέκταση ".pdf"
+ * @returns {void}
+ */
+let sendEmail = (recipient, attachment, pdfName="filled") => {
     let email = {
         from: process.env.MAILFROM,
-        to: recepient,
+        to: recipient,
         subject: 'Η φόρμα σας',
         html: `<p>Παρακαλούμε, ελέγξτε τη συνημμένη φόρμα, υπογράψτε τη και στείλτε τη, σύμφωνα με τις οδηγίες που έχετε λάβει.</p>`,
         attachments: [
             {
-                filename: 'filled.pdf',
+                filename: `${pdfName}.pdf`,
                 content: attachment
             }
         ]

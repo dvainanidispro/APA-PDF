@@ -31,6 +31,7 @@ function fillField(form, fieldName, fieldValue, font){
         return; 
     }
 
+    /** Το είδος του πεδίου σύμφωνα με την ονομασία του PDF-LIB */
     let fieldType = field.constructor.name;
     
     fieldValue = (isDate(fieldValue)) ? greekDate(fieldValue) : fieldValue;     // Ειδική μεταχείριση ημερομηνιών
@@ -50,9 +51,15 @@ function fillField(form, fieldName, fieldValue, font){
                 form.getRadioGroup(fieldName).select(fieldValue, {font: font});
                 break;
             case 'PDFDropdown':
-                form.getDropdown(fieldName).select(fieldValue, {font: font});
+                form.getDropdown(fieldName).select(fieldValue, false);
+                field.updateAppearances(font);
                 break;
-            // case 'PDFOptionList':            // αυτό παίρνει και array
+            case 'PDFOptionList':            // αυτό παίρνει και array
+                let listOfValues = (Array.isArray(fieldValue)) ? fieldValue : [fieldValue];
+                form.getOptionList(fieldName).select(listOfValues, true); 
+                form.getOptionList(fieldName).setOptions(listOfValues, true);   // Δεν λειτουργεί σωστά το προηγούμενο, οπότε αφήνω μόνο τις επιλεγμένες
+                field.updateAppearances(font);
+                break;
             // case 'PDFButton':
             // case 'PDFSignature':
             default:

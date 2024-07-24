@@ -15,8 +15,10 @@ server.use(urlencoded({extended: false}));
 server.use(json());
 server.use(express.static('public')); 
 
+import { multipleSelectParser } from './controllers/multipleselect.js';
 import { fillForm } from './controllers/fillform.js';
 import { sendEmail } from './controllers/email.js';
+
 
 
 
@@ -24,14 +26,17 @@ import { sendEmail } from './controllers/email.js';
 //////////////////////////////////////        WEB ROUTES         ////////////////////////////////////////
 
 
+
 server.get('/', (req, res) => {
    res.status(200).send('PDF Server is up!');
 });
 
 
-server.post('/', async (req, res) => {
+
+server.post('/', multipleSelectParser, async (req, res) => {
     let formData = req.body;
     console.debug({formData});
+
     /** Πεδία φόρμας με δεσμευμένο όνομα και συγκεκριμένη λειτουργία */
     let metaData = {
         /** Η τοποθεσία του άδειου fillable PDF */
@@ -70,8 +75,10 @@ server.post('/', async (req, res) => {
 
 
 
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////          START THE SERVER         /////////////////////////////////////
+
 
 
 let port = process.env.PORT??80;

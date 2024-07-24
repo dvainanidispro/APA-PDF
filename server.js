@@ -48,29 +48,28 @@ server.post('/', multipleSelectParser, async (req, res) => {
     }
     console.debug({metaData});
     
+    /** Το συμπληρωμένο PDF ως αρχείο */
+    let outputPdf = await fillForm(metaData.pdfUrl, formData);
+    if (!outputPdf) {
+        res.status(500).send('Error filling the PDF.');
+        return;
+    }
 
-    fillForm(metaData.pdfUrl, formData).then((outputPdf) => {
-
-        if (!outputPdf) {
-            res.status(500).send('Error filling the PDF.');
-            return;
-        }
-
-        // Αποθήκευση αρχείου τοπικά. TODO: Να αφαιρεθεί αργότερα. 
-        fs.writeFile(`public/output/${metaData.pdfName}.pdf`, outputPdf, (err) => {
-            if (err) {throw err};
-            console.debug('The file has been saved!');
-        });
-
-        // Αποστολή αρχείου με email
-        if (metaData.recipient) {
-            sendEmail(metaData.recipient, outputPdf, metaData.pdfName);
-        }
-
-        // res.status(200).send(outputPdf); // για αποστολή αρχείου ως απάντηση στο request
-        // res.status(200).send('PDF has been filled and sent to the submitter.');
-        res.status(200).send('OK');
+    // Αποθήκευση αρχείου τοπικά. TODO: Να αφαιρεθεί αργότερα. 
+    fs.writeFile(`public/output/${metaData.pdfName}.pdf`, outputPdf, (err) => {
+        if (err) {throw err};
+        console.debug('The file has been saved!');
     });
+
+    // Αποστολή αρχείου με email
+    if (metaData.recipient) {
+        sendEmail(metaData.recipient, outputPdf, metaData.pdfName);      // do now await this
+    }
+
+    // res.status(200).send(outputPdf); // για αποστολή αρχείου ως απάντηση στο request
+    // res.status(200).send('PDF has been filled and sent to the submitter.');
+    res.status(200).send('OK');
+
 });
 
 

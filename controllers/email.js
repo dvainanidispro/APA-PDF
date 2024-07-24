@@ -13,33 +13,37 @@ let transporter = nodemailer.createTransport({
 /**
  * Στέλνει το PDF με email στον παραλήπτη
  * @param {string} recipient To email του παραλήπτη
- * @param {Uint8Array} attachment Το αρχείο που θα αποσταλεί ως συνημμένο
+ * @param {Uint8Array|Buffer} attachment Το αρχείο που θα αποσταλεί ως συνημμένο
  * @param {string} pdfName Το όνομα του συνημμένου χωρίς την επέκταση ".pdf"
- * @returns {void}
+ * @returns {Promise<any>} Promise που επιστρέφει info ή error.
  */
-let sendEmail = (recipient, attachment, pdfName="filled") => {
-    let email = {
-        from: {
-            name: process.env.MAILSENDERNAME,
-            address: process.env.MAILFROM
-        },
-        to: recipient,
-        subject: 'Η φόρμα σας',
-        html: `<p>Παρακαλούμε, ελέγξτε τη συνημμένη φόρμα, υπογράψτε τη και στείλτε τη, σύμφωνα με τις οδηγίες που έχετε λάβει.</p>`,
-        attachments: [
-            {
-                filename: `${pdfName}.pdf`,
-                content: attachment
+async function sendEmail (recipient, attachment, pdfName="filled") {
+    return new Promise((resolve, reject) => {
+        let email = {
+            from: {
+                name: process.env.MAILSENDERNAME,
+                address: process.env.MAILFROM
+            },
+            to: recipient,
+            subject: 'Η φόρμα σας',
+            html: `<p>Παρακαλούμε, ελέγξτε τη συνημμένη φόρμα, υπογράψτε τη και στείλτε τη, σύμφωνα με τις οδηγίες που έχετε λάβει.</p>`,
+            attachments: [
+                {
+                    filename: `${pdfName}.pdf`,
+                    content: attachment
+                }
+            ]
+        };
+        console.log('Sending email...');
+        transporter.sendMail(email, (error, info) => {
+            if (error) {
+                console.log(error);
+                reject(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+                resolve(info);
             }
-        ]
-    };
-    console.log('Sending email...');
-    transporter.sendMail(email, (error, info) => {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log('Email sent: ' + info.response);
-        }
+        });
     });
 };
 

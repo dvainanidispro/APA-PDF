@@ -1,6 +1,6 @@
 'use strict'
 
-import { PDFDocument } from 'pdf-lib';
+import { PDFDocument, PDFFont, PDFForm } from 'pdf-lib';
 import fs from 'fs';
 
 import fontkit from '@pdf-lib/fontkit'
@@ -20,7 +20,14 @@ function greekDate(dateAsString){
 }
 
  
-/** Συμπληρώνει ένα συγκεκριμένο πεδίο της φόρμας με τη συγκεκριμένη τιμή */
+/**
+ * Συμπληρώνει ένα συγκεκριμένο πεδίο της φόρμας με τη συγκεκριμένη τιμή 
+ * @param {PDFForm} form H φόρμα σε μορφή που την χειρίζεται το pdf-lib form
+ * @param {string} fieldName 
+ * @param {string|Array<string>} fieldValue 
+ * @param {PDFFont} font Η γραμματοσειρά σε μορφή που την χειρίζεται το pdf-lib font
+ * @returns {void}
+ */
 function fillField(form, fieldName, fieldValue, font){
     
     /** Το πεδίο του PDF */
@@ -72,7 +79,12 @@ function fillField(form, fieldName, fieldValue, font){
 
 } 
 
-/** Συμπληρώνει ένα fillable PDF που βρίσκεται στο pdfLocation με βάση τα στοιχεία μιας φόρμας */
+/**
+ * Συμπληρώνει ένα fillable PDF που βρίσκεται στο pdfLocation με βάση τα στοιχεία μιας φόρμας
+ * @param {URL} pdfLocation Το public URL του "άδειου" προς συμπλήρωση PDF
+ * @param {Object.<string, string>} formData To αντικείμενο με τα δεδομένα μορφής πεδίο:τιμή προς συμπλήρωση
+ * @returns {Promise<Uint8Array>} Το συμπληρωμένο PDF σε μορφή Uint8Array
+ */
 async function fillForm(pdfLocation, formData){
 
     let pdfBytes = await fetch(pdfLocation)

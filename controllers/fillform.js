@@ -54,12 +54,12 @@ function fillField(form, fieldName, fieldValue, font){
                 form.getDropdown(fieldName).select(fieldValue, false);
                 field.updateAppearances(font);
                 break;
-            case 'PDFOptionList':            // αυτό παίρνει και array
-                let listOfValues = (Array.isArray(fieldValue)) ? fieldValue : [fieldValue];
-                form.getOptionList(fieldName).select(listOfValues, true); 
-                form.getOptionList(fieldName).setOptions(listOfValues, true);   // Δεν λειτουργεί σωστά το προηγούμενο, οπότε αφήνω μόνο τις επιλεγμένες
-                field.updateAppearances(font);
-                break;
+            // case 'PDFOptionList':            // αυτό παίρνει και array, έρχονται ως 'listme[0]': 'value0', 'listme[1]': 'value1'
+                // let listOfValues = (Array.isArray(fieldValue)) ? fieldValue : [fieldValue];
+                // form.getOptionList(fieldName).select(listOfValues, true); 
+                // form.getOptionList(fieldName).setOptions(listOfValues, true);   // Δεν λειτουργεί σωστά το προηγούμενο, οπότε αφήνω μόνο τις επιλεγμένες
+                // field.updateAppearances(font);
+                // break;
             // case 'PDFButton':
             // case 'PDFSignature':
             default:

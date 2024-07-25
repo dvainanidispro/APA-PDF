@@ -52,7 +52,9 @@ function fillField(form, fieldName, fieldValue, font){
                 field.updateAppearances(font);
                 break;
             case 'PDFCheckBox':
-                form.getCheckBox(fieldName).check();
+                if (fieldValue !="0"){      // κάποιες html φόρμες στέλνουν και με value="0" όταν δεν είναι checked
+                    form.getCheckBox(fieldName).check();
+                }
                 break;
             case 'PDFRadioGroup':
                 form.getRadioGroup(fieldName).select(fieldValue, {font: font});

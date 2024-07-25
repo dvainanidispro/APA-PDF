@@ -18,6 +18,7 @@ server.use(express.static('public'));
 import { multipleSelectParser } from './controllers/multipleselect.js';
 import { fillForm } from './controllers/fillform.js';
 import { sendEmail } from './controllers/email.js';
+import { validateKey } from './controllers/validatekey.js';
 
 
 
@@ -33,7 +34,8 @@ server.get('/', (req, res) => {
 
 
 
-server.post('/', multipleSelectParser, async (req, res) => {
+server.post('/', validateKey, multipleSelectParser, async (req, res) => {
+
     let formData = req.body;
     console.debug({formData});
 

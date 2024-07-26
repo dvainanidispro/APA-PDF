@@ -29,7 +29,7 @@ import { validateKey } from './controllers/validatekey.js';
 
 
 server.get('/', (req, res) => {
-   res.status(200).send('PDF Server is up!');
+   res.status(200).send('PDF Service is up!');
 });
 
 

@@ -36,8 +36,9 @@ server.get('/', (req, res) => {
 
 server.post('/', validateKey, multipleSelectParser, async (req, res) => {
 
+    console.log('Received a POST request.');
     let formData = req.body;
-    console.debug({formData});
+    console.debug({formData});      // TODO: Να αφαιρεθεί αργότερα. 
 
     /** Πεδία φόρμας με δεσμευμένο όνομα και συγκεκριμένη λειτουργία */
     let metaData = {
@@ -48,7 +49,7 @@ server.post('/', validateKey, multipleSelectParser, async (req, res) => {
         /** Το όνομα του αρχείου pdf που θα δημιουργηθεί */
         pdfName: req.body.PdfName ?? 'filled',
     }
-    console.debug({metaData});
+    console.debug({metaData});      // TODO: Να αφαιρεθεί αργότερα. 
     
     /** Το συμπληρωμένο PDF ως αρχείο */
     let outputPdf = await fillForm(metaData.pdfUrl, formData);
@@ -57,11 +58,11 @@ server.post('/', validateKey, multipleSelectParser, async (req, res) => {
         return;
     }
 
-    // Αποθήκευση αρχείου τοπικά. TODO: Να αφαιρεθεί αργότερα. 
-    fs.writeFile(`public/output/${metaData.pdfName}.pdf`, outputPdf, (err) => {
-        if (err) {throw err};
-        console.debug('The file has been saved!');
-    });
+    // Αποθήκευση αρχείου τοπικά. 
+    // fs.writeFile(`public/output/${metaData.pdfName}.pdf`, outputPdf, (err) => {
+    //     if (err) {throw err};
+    //     console.debug('The file has been saved!');
+    // });
 
     // Αποστολή αρχείου με email
     if (metaData.recipient) {

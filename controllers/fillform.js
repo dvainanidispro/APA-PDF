@@ -42,7 +42,7 @@ function fillField(form, fieldName, fieldValue, font){
     let fieldType = field.constructor.name;
     
     fieldValue = (isDate(fieldValue)) ? greekDate(fieldValue) : fieldValue;     // Ειδική μεταχείριση ημερομηνιών
-    console.debug({fieldType,fieldName,fieldValue});            // TODO: Να αφαιρεθεί
+    console.debug({fieldType,fieldName,fieldValue});            // TODO: Να αφαιρεθεί αργότερα
 
     try{
     
@@ -98,7 +98,7 @@ async function fillForm(pdfLocation, formData){
         })
         .then(res => res.arrayBuffer())
         .catch(err => {         // error in any previous step
-            console.log(err);
+            console.error(err);
             return false;
         });
     if(!pdfBytes){ return false }

@@ -34,13 +34,13 @@ async function sendEmail (recipient, attachment, pdfName="filled") {
                 }
             ]
         };
-        console.log('Sending email...');
+        console.debug('Sending email...');
         transporter.sendMail(email, (error, info) => {
             if (error) {
-                console.log(error);
+                console.error(error);
                 reject(error);
             } else {
-                console.log('Email sent: ' + info.response);
+                console.debug('Email sent: ' + info.response);
                 resolve(info);
             }
         });

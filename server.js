@@ -19,6 +19,7 @@ import { multipleSelectParser } from './controllers/multipleselect.js';
 import { fillForm } from './controllers/fillform.js';
 import { sendEmail } from './controllers/email.js';
 import { validateKey } from './controllers/validatekey.js';
+import { consolelog } from './controllers/consolelog.js';
 
 
 
@@ -34,11 +35,9 @@ server.get('/', (req, res) => {
 
 
 
-server.post('/', validateKey, multipleSelectParser, async (req, res) => {
+server.post('/', consolelog, validateKey, multipleSelectParser, async (req, res) => {
 
-    console.log('Received a POST request.');
     let formData = req.body;
-    console.debug({formData});      // TODO: Να αφαιρεθεί αργότερα. 
 
     /** Πεδία φόρμας με δεσμευμένο όνομα και συγκεκριμένη λειτουργία */
     let metaData = {

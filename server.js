@@ -43,8 +43,12 @@ server.post('/', consolelog, validateKey, multipleSelectParser, async (req, res)
     let metaData = {
         /** Η τοποθεσία του άδειου fillable PDF */
         pdfUrl: req.body.PdfTemplateUrl,
-        /** Παραλήπτης του email θα είναι είτε το πεδίο που ορίζεται στο RecipientField, είτε το πεδιό email */ 
-        recipient: req.body[req.body.RecipientField] ?? req.body.email ?? null,
+        recipients: {
+            /** Παραλήπτης του email θα είναι είτε το πεδίο που ορίζεται στο RecipientField, είτε το πεδιό email */ 
+            to: req.body[req.body.RecipientField] ?? req.body.email ?? null,
+            cc: req.body.Cc ?? null,
+            bcc: req.body.Bcc ?? null,
+        },
         /** Το όνομα του αρχείου pdf που θα δημιουργηθεί */
         pdfName: req.body.PdfName ?? 'filled',
     }
@@ -64,8 +68,8 @@ server.post('/', consolelog, validateKey, multipleSelectParser, async (req, res)
     // });
 
     // Αποστολή αρχείου με email
-    if (metaData.recipient) {
-        sendEmail(metaData.recipient, outputPdf, metaData.pdfName);      // do now await this
+    if (metaData.recipients.to) {
+        sendEmail(metaData.recipients, outputPdf, metaData.pdfName);      // do now await this
     }
 
     // res.status(200).send(outputPdf); // για αποστολή αρχείου ως απάντηση στο request

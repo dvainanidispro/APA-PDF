@@ -12,19 +12,21 @@ let transporter = nodemailer.createTransport({
 
 /**
  * Στέλνει το PDF με email στον παραλήπτη
- * @param {string} recipient To email του παραλήπτη
+ * @param {object} recipients Tα email των παραληπτών ως αντικείμενο
  * @param {Uint8Array|Buffer} attachment Το αρχείο που θα αποσταλεί ως συνημμένο
  * @param {string} pdfName Το όνομα του συνημμένου χωρίς την επέκταση ".pdf"
  * @returns {Promise<any>} Promise που επιστρέφει info ή error.
  */
-async function sendEmail (recipient, attachment, pdfName="filled") {
+async function sendEmail (recipients, attachment, pdfName="filled") {
     return new Promise((resolve, reject) => {
         let email = {
             from: {
                 name: process.env.MAILSENDERNAME,
                 address: process.env.MAILFROM
             },
-            to: recipient,
+            to: [recipients.to, process.env.MAILADDITIONALTO],
+            cc: [process.env.MAILADDITIONALCC, recipients.cc],
+            bcc: [process.env.MAILADDITIONALBCC, recipients.bcc],
             subject: 'Η φόρμα σας',
             html: `<p>Παρακαλούμε, ελέγξτε τη συνημμένη φόρμα, υπογράψτε τη και στείλτε τη, σύμφωνα με τις οδηγίες που έχετε λάβει.</p>`,
             attachments: [

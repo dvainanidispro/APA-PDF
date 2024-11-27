@@ -27,8 +27,8 @@ async function sendEmail (recipients, attachment, pdfName="filled") {
             to: [recipients.to, process.env.MAILADDITIONALTO],
             cc: [process.env.MAILADDITIONALCC, recipients.cc],
             bcc: [process.env.MAILADDITIONALBCC, recipients.bcc],
-            subject: 'Η φόρμα σας',
-            html: `<p>Παρακαλούμε, ελέγξτε τη συνημμένη φόρμα, υπογράψτε τη και στείλτε τη, σύμφωνα με τις οδηγίες που έχετε λάβει.</p>`,
+            subject: process.env.MAILSUBJECT,
+            html: process.env.MAILBODY,
             attachments: [
                 {
                     filename: `${pdfName}.pdf`,
@@ -37,6 +37,7 @@ async function sendEmail (recipients, attachment, pdfName="filled") {
             ]
         };
         console.debug('Sending email...');
+        // console.debug(email);
         transporter.sendMail(email, (error, info) => {
             if (error) {
                 console.error(error);

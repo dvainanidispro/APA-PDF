@@ -52,7 +52,7 @@ server.post('/', consolelog, validateKey, multipleSelectParser, async (req, res)
         /** Το όνομα του αρχείου pdf που θα δημιουργηθεί */
         pdfName: req.body.PdfName ?? 'filled',
     }
-    console.debug({metaData});      // TODO: Να αφαιρεθεί αργότερα. 
+    // console.debug({metaData});      // TODO: Να εμφανίζεται μόνο σε περίπτωση λάθους. 
     
     /** Το συμπληρωμένο PDF ως αρχείο */
     let outputPdf = await fillForm(metaData.pdfUrl, formData);

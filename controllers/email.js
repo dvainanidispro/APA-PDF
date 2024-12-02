@@ -17,7 +17,7 @@ let transporter = nodemailer.createTransport({
  * @param {string} pdfName Το όνομα του συνημμένου χωρίς την επέκταση ".pdf"
  * @returns {Promise<any>} Promise που επιστρέφει info ή error.
  */
-async function sendEmail (recipients, attachment, pdfName="filled") {
+async function sendEmail (recipients, attachment, pdfName="filled", mailOptions) {
     return new Promise((resolve, reject) => {
         let email = {
             from: {
@@ -27,8 +27,8 @@ async function sendEmail (recipients, attachment, pdfName="filled") {
             to: [recipients.to, process.env.MAILADDITIONALTO],
             cc: [process.env.MAILADDITIONALCC, recipients.cc],
             bcc: [process.env.MAILADDITIONALBCC, recipients.bcc],
-            subject: process.env.MAILSUBJECT,
-            html: process.env.MAILBODY,
+            subject: mailOptions.subject ?? process.env.MAILSUBJECT,
+            html: mailOptions.html ?? process.env.MAILBODY,
             attachments: [
                 {
                     filename: `${pdfName}.pdf`,

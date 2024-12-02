@@ -51,6 +51,11 @@ server.post('/', consolelog, validateKey, multipleSelectParser, async (req, res)
         },
         /** Το όνομα του αρχείου pdf που θα δημιουργηθεί */
         pdfName: req.body.PdfName ?? 'filled',
+        /** Τα στοιχεία του email */
+        mailOptions: {
+            subject: req.body.Subject ?? null,
+            html: req.body.Body ?? null,
+        }
     }
     // console.debug({metaData});      // TODO: Να εμφανίζεται μόνο σε περίπτωση λάθους. 
     
@@ -69,7 +74,7 @@ server.post('/', consolelog, validateKey, multipleSelectParser, async (req, res)
 
     // Αποστολή αρχείου με email
     if (metaData.recipients.to) {
-        sendEmail(metaData.recipients, outputPdf, metaData.pdfName);      // do now await this
+        sendEmail(metaData.recipients, outputPdf, metaData.pdfName, metaData.mailOptions);      // do now await this
     }
 
     // res.status(200).send(outputPdf); // για αποστολή αρχείου ως απάντηση στο request

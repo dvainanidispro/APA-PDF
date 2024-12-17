@@ -40,7 +40,6 @@ async function sendEmail (recipients, attachment, pdfName="filled", mailOptions)
         // console.debug(email);
         transporter.sendMail(email, (error, info) => {
             if (error) {
-                console.error(error);
                 reject(error);
             } else {
                 console.debug('Email sent: ' + info.response);

@@ -6,7 +6,7 @@
 ///////////////////////////////////         DEPENDENCIES         /////////////////////////////////////
 
 
-import fs from 'fs';
+// import fs from 'fs';
 import 'dotenv/config';
 
 import express, { urlencoded, json } from 'express';
@@ -57,7 +57,7 @@ server.post('/', consolelog, validateKey, multipleSelectParser, async (req, res)
             html: req.body.Body ?? null,
         }
     }
-    // console.debug({metaData});      // TODO: Να εμφανίζεται μόνο σε περίπτωση λάθους. 
+    // console.debug({metaData});
     
     /** Το συμπληρωμένο PDF ως αρχείο */
     let outputPdf = await fillForm(metaData.pdfUrl, formData);
@@ -74,11 +74,14 @@ server.post('/', consolelog, validateKey, multipleSelectParser, async (req, res)
 
     // Αποστολή αρχείου με email
     if (metaData.recipients.to) {
-        sendEmail(metaData.recipients, outputPdf, metaData.pdfName, metaData.mailOptions);      // do now await this
+        sendEmail(metaData.recipients, outputPdf, metaData.pdfName, metaData.mailOptions)       // do now await this
+            .catch(err=>{
+                console.error(`Error sending email to ${metaData.recipients.to}`);
+                console.error(err);
+            });      
     }
 
     // res.status(200).send(outputPdf); // για αποστολή αρχείου ως απάντηση στο request
-    // res.status(200).send('PDF has been filled and sent to the submitter.');
     res.status(200).send('OK');
 
 });

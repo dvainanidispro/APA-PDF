@@ -42,7 +42,7 @@ function fillField(form, fieldName, fieldValue, font){
     let fieldType = field.constructor.name;
     
     fieldValue = (isDate(fieldValue)) ? greekDate(fieldValue) : fieldValue;     // Ειδική μεταχείριση ημερομηνιών
-    // console.debug({fieldType,fieldName,fieldValue});            // TODO: Να εμφανίζεται μόνο σε περίπτωση λάθους
+    // console.debug({fieldType,fieldName,fieldValue});            // Να εμφανίζεται μόνο σε περίπτωση λάθους
 
     try{
     

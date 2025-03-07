@@ -30,7 +30,8 @@ import { consolelog } from './controllers/consolelog.js';
 
 
 server.get('/', (req, res) => {
-   res.status(200).send('PDF Service is up!');
+    res.status(200).send('PDF Service is up!\n').end();
+    // το \n υπάρχει ώστε με την εντολή "curl localhost" στο terminal να γίνεται αλλαγή γραμμής για την επόμενη εντολή
 });
 
 

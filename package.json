@@ -4,6 +4,9 @@
   "description": "Fills a fillable PDF from POST form data",
   "main": "index.js",
   "type": "module",
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js"

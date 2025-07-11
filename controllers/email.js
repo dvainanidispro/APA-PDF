@@ -1,5 +1,6 @@
 'use strict';
 import nodemailer from 'nodemailer';
+import { log } from './logger.js';
 
 let transporter = nodemailer.createTransport({
     host: process.env.MAILHOST,
@@ -36,13 +37,13 @@ async function sendEmail (recipients, attachment, pdfName="filled", mailOptions)
                 }
             ]
         };
-        console.debug('Sending email...');
+        log.info('Sending email...');
         // console.debug(email);
         transporter.sendMail(email, (error, info) => {
             if (error) {
                 reject(error);
             } else {
-                console.debug('Email sent: ' + info.response);
+                log.info('Email sent: ' + info.response);
                 resolve(info);
             }
         });

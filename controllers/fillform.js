@@ -1,6 +1,7 @@
 'use strict'
 
 import { PDFDocument, PDFFont, PDFForm } from 'pdf-lib';
+import { log } from './logger.js';
 import fs from 'fs';
 
 import fontkit from '@pdf-lib/fontkit'
@@ -76,7 +77,7 @@ function fillField(form, fieldName, fieldValue, font){
         }
 
     }catch(e){
-        console.error(`Λάθος στο πεδίο ${fieldName}: ${e.message}`);
+        log.error(`Λάθος στο πεδίο ${fieldName}: ${e.message}`);
     }
 
 } 
@@ -98,7 +99,7 @@ async function fillForm(pdfLocation, formData){
         })
         .then(res => res.arrayBuffer())
         .catch(err => {         // error in any previous step
-            console.error(err);
+            log.error(err);
             return false;
         });
     if(!pdfBytes){ return false }

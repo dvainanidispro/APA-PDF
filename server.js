@@ -19,7 +19,7 @@ import { multipleSelectParser } from './controllers/multipleselect.js';
 import { fillForm } from './controllers/fillform.js';
 import { sendEmail } from './controllers/email.js';
 import { validateKey } from './controllers/validatekey.js';
-import { consolelog } from './controllers/consolelog.js';
+import { log } from './controllers/logger.js';
 
 
 
@@ -36,7 +36,7 @@ server.get('/', (req, res) => {
 
 
 
-server.post('/', consolelog, validateKey, multipleSelectParser, async (req, res) => {
+server.post('/', log.formSubmission, validateKey, multipleSelectParser, async (req, res) => {
 
     let formData = req.body;
 
@@ -77,8 +77,8 @@ server.post('/', consolelog, validateKey, multipleSelectParser, async (req, res)
     if (metaData.recipients.to) {
         sendEmail(metaData.recipients, outputPdf, metaData.pdfName, metaData.mailOptions)       // do now await this
             .catch(err=>{
-                console.error(`Error sending email to ${metaData.recipients.to}`);
-                console.error(err);
+                log.error(`Error sending email to ${metaData.recipients.to}`);
+                log.error(err);
             });      
     }
 
@@ -98,8 +98,7 @@ server.post('/', consolelog, validateKey, multipleSelectParser, async (req, res)
 let port = process.env.PORT??80;
 const startWebServer = (server,port) => {
     server.listen(port, () => {
-        let presentTime = () => (new Date()).toLocaleString('el-GR',{hourCycle: 'h23', dateStyle: 'short', timeStyle: 'short', timeZone: 'Europe/Athens'});
-        console.log(`\x1b[35m Server is listening on ${process.env.LISTENINGURL}:${port}. Started at: ${presentTime()}. \x1b[0m`);
+        log.system(`Server is listening on ${process.env.LISTENINGURL}:${port}.`);
     });
 };
 startWebServer(server,port);
